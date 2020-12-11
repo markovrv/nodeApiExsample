@@ -1,14 +1,10 @@
-var express = require("express")
-var bodyParser = require('body-parser')
-var db = require('./db')
-var router = require("./router")
-var app = express()
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
-    extended: true
-}))
+var goodsRouter = require("./routes/api/goods");
+var ordersRouter = require("./routes/api/orders");
+var app = require("express")();
+var db = require('./db');
 
-router.use(app);
+app.use('/api/goods', goodsRouter);
+app.use('/api/orders', ordersRouter);
 
 db.connect('mongodb://localhost:27017', 'myapi', err => {
     if (err) return console.log(err);

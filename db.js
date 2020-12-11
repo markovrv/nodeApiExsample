@@ -13,4 +13,4 @@ exports.connect = (url, bdname, done) => {
     });
 }
 
-exports.collection = (collection) => state.db.collection(collection);
+exports.collection = (coll) => state.db.collection(coll);
