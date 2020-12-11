@@ -8,7 +8,7 @@ exports.connect = (url, bdname, done) => {
         useUnifiedTopology: true
     }, (err, client) => {
         if (err) return done(err);
-        state.db = client.db(bdname);;
+        state.db = client.db(bdname);
         done();
     });
 }
