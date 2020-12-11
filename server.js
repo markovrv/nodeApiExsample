@@ -1,8 +1,10 @@
 var goodsRouter = require("./routes/api/goods");
 var ordersRouter = require("./routes/api/orders");
-var app = require("express")();
+var express = require("express");
+var app = express();
 var db = require('./db');
 
+app.use(express.static('public'));
 app.use('/api/goods', goodsRouter);
 app.use('/api/orders', ordersRouter);
 
