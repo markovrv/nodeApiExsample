@@ -5,7 +5,7 @@
     :customStyles="{ width: '50%', minWidth: '300px', height: 'fit-content' }"
   >
     <h3>{{ $store.state.goodAdminModal.header }}</h3>
-    <form v-if="$store.state.goodAdminModal.type != 'photo'">
+    <div v-if="$store.state.goodAdminModal.type != 'photo'">
       <div class="form-group">
         <label for="name">Наименование товара</label>
         <input v-model="good.name" type="text" class="form-control" id="name" />
@@ -141,8 +141,8 @@
           Удалить
         </button>
       </div>
-    </form>
-    <form v-else>
+    </div>
+    <div v-else>
       <div class="input-group">
         <div class="custom-file">
           <input
@@ -172,7 +172,7 @@
           Удалить
         </button>
       </div>
-    </form>
+    </div>
   </vodal>
 </template>
 <script>
