@@ -52,7 +52,7 @@ export default new Vuex.Store({
       cartPos: []
     },
     cartInfoShow: false,
-    server: 'http://192.168.2.120:3012',
+    server: '', // 'http://192.168.2.120:3012',
     goodAdminModal: {
       show: false,
       header: 'Заголовок',
