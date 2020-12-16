@@ -124,5 +124,13 @@ body {
     border-radius: 0;
     min-height: 100vh;
   }
+  .css-3d-text {
+    background-image: none !important;
+    margin: 0 !important;
+    height: fit-content !important;
+  }
+  .info-text {
+    margin: 0 !important;
+  }
 }
 </style>

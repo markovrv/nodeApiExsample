@@ -1,10 +1,10 @@
 <template>
   <div>
     <button
-      v-if="gid > -1"
+      v-if="type != 'add'"
       class="btn btn-primary btn-sm btn-top"
       type="button"
-      @click="$store.commit('showGoodAdminModal', { gid, type: 'edit' })"
+      @click="$store.commit('showGoodAdminModal', { good, type: 'edit' })"
     >
       <svg
         width="1em"
@@ -21,11 +21,11 @@
       </svg>
     </button>
     <button
-      v-if="gid > -1"
+      v-if="type != 'add'"
       class="btn btn-primary btn-sm btn-top"
       type="button"
       style="right: 40px"
-      @click="$store.commit('showGoodAdminModal', { gid, type: 'photo' })"
+      @click="$store.commit('showGoodAdminModal', { good, type: 'photo' })"
     >
       <svg
         width="1em"
@@ -42,11 +42,11 @@
       </svg>
     </button>
     <button
-      v-if="gid == -1"
+      v-if="type == 'add'"
       class="btn btn-success btn-bottom"
       type="button"
       style="padding: 0;"
-      @click="$store.commit('showGoodAdminModal', { gid, type: 'add' })"
+      @click="$store.commit('showGoodAdminModal', { good, type: 'add' })"
     >
       <svg
         width="2em"
@@ -66,7 +66,7 @@
 </template>
 <script>
 export default {
-  props: ['gid']
+  props: ['good', 'type']
 }
 </script>
 

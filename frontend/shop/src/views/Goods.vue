@@ -1,7 +1,24 @@
 <template>
   <div class="goods container-md">
+    <div class="text-right css-3d-text">
+      <div>
+        Добро пожаловать<br />
+        в наш интернет магазин<br />
+      </div>
+      <div class="info-text text-left">
+        У нас есть новогодние предложения:<br />
+        - восковые свечи,<br />
+        - ароматное медовое мыло,<br />
+        - мёд в оригинальной упаковке
+      </div>
+    </div>
     <div v-for="group in groupps" :key="group.val">
-      <div v-show="group.val != null && filteredGoods(group).length > 0" class="title">{{ group.name }}</div>
+      <div
+        v-show="group.val != null && filteredGoods(group).length > 0"
+        class="title"
+      >
+        {{ group.name }}
+      </div>
       <div class="row">
         <div
           v-for="(good, gid) in filteredGoods(group)"
@@ -12,7 +29,7 @@
             class="card"
             style="width: 100%; max-width: 18rem; margin: 10px auto"
           >
-            <admin-btns v-if="adminMode" :gid="gid" />
+            <admin-btns v-if="adminMode" type="edit" :good="good" />
             <img
               v-if="good.ver[verSelected(good)].photo"
               class="card-img-top"
@@ -36,7 +53,7 @@
                   :class="
                     isSelected(good, id) ? 'btn-success' : 'btn-outline-success'
                   "
-                  @click="$store.commit('setSelected', { gid, id })"
+                  @click="$store.commit('setSelected', { good, id })"
                 >
                   {{ v.comment }}
                 </button>
@@ -60,7 +77,7 @@
             </div>
           </div>
         </div>
-        <admin-btns gid="-1" v-if="adminMode" />
+        <admin-btns good="{}" type="add" v-if="adminMode" />
         <edit-win />
         <div
           v-show="infoShow"
@@ -112,7 +129,7 @@ export default {
     },
     setSelected (good, gid) {
       if (good.selected === undefined || good.selected >= good.ver.length) {
-        this.$store.commit('setSelected', { gid, id: 0 })
+        this.$store.commit('setSelected', { good, id: 0 })
       }
     }
   },
@@ -132,3 +149,30 @@ export default {
   }
 }
 </script>
+<style>
+.css-3d-text {
+  font-size: 28pt;
+  margin: 20px auto 0px;
+  padding: 6px 20px 20px 20px;
+  border-radius: 1rem;
+  height: 323px;
+  background-image: url(https://пасека-марковых.рф/images/photos/2/foto0090.jpg);
+  background-size: 100%;
+  line-height: 1;
+  color: #009900;
+  text-shadow: 2px 1px 3px #090;
+}
+.info-text {
+  color: red;
+  text-shadow: 1px 1px 2px rgba(255, 0, 0, 0.6);
+  font-size: 18pt;
+  line-height: 1.3;
+  background-color: rgba(255, 255, 255, 0.7);
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 75px 0 0 auto;
+  border-radius: 1em;
+  padding: 13px;
+}
+</style>

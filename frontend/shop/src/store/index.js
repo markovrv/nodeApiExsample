@@ -38,10 +38,10 @@ export default new Vuex.Store({
   state: {
     groupps: [
       { val: null, name: 'Нет группы' },
-      { val: 1, name: 'Мёд' },
-      { val: 2, name: 'Свечи' },
-      { val: 3, name: 'Мыло' },
-      { val: 4, name: 'Наборы' }
+      { val: 2, name: 'Восковые вечи' },
+      { val: 3, name: 'Медовое мыло' },
+      { val: 4, name: 'Наборы подарков' },
+      { val: 1, name: 'Мёд' }
     ],
     goods: [],
     orders: [],
@@ -52,7 +52,7 @@ export default new Vuex.Store({
       cartPos: []
     },
     cartInfoShow: false,
-    server: '', // 'http://192.168.2.120:3012',
+    server: 'http://node.markovrv.ru', // 'http://192.168.2.120:3012',
     goodAdminModal: {
       show: false,
       header: 'Заголовок',
@@ -99,12 +99,13 @@ export default new Vuex.Store({
       state.orders = data
     },
     setSelected (state, data) {
-      Vue.set(state.goods[data.gid], 'selected', data.id)
+      var good = state.goods.find(obj => obj._id === data.good._id)
+      Vue.set(good, 'selected', data.id)
     },
     showGoodAdminModal (state, data) {
       Vue.set(state.goodAdminModal, 'type', data.type)
-      if (data.gid > -1) {
-        Vue.set(state.goodAdminModal, 'good', state.goods[data.gid])
+      if (data.type !== 'add') {
+        Vue.set(state.goodAdminModal, 'good', data.good)
       } else {
         Vue.set(state.goodAdminModal, 'good', new Good())
       }
