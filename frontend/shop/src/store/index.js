@@ -38,7 +38,7 @@ export default new Vuex.Store({
   state: {
     groupps: [
       { val: null, name: 'Нет группы' },
-      { val: 2, name: 'Восковые вечи' },
+      { val: 2, name: 'Восковые свечи' },
       { val: 3, name: 'Медовое мыло' },
       { val: 4, name: 'Наборы подарков' },
       { val: 1, name: 'Мёд' }
