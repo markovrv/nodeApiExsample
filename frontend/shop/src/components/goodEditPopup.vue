@@ -39,14 +39,12 @@
         <input
           type="number"
           class="form-control"
-          :id="'price' + id"
           v-model="v.price"
           placeholder="Цена"
         />
         <input
           type="text"
           class="form-control"
-          :id="'comment' + id"
           v-model="v.comment"
           placeholder="описание"
         />

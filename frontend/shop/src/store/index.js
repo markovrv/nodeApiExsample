@@ -52,7 +52,7 @@ export default new Vuex.Store({
       cartPos: []
     },
     cartInfoShow: false,
-    server: '', // 'http://node.markovrv.ru', // 'http://192.168.2.120:3012',
+    server: 'http://node.markovrv.ru', // 'http://192.168.2.120:3012',
     goodAdminModal: {
       show: false,
       header: 'Заголовок',
@@ -74,9 +74,16 @@ export default new Vuex.Store({
       )
       localStorage.cart = JSON.stringify(state.cart)
     },
-    delCartPos (state, id) {
-      state.cart.cartPos.splice(id, 1)
+    saveCart (state) {
       localStorage.cart = JSON.stringify(state.cart)
+    },
+    clearCart (state) {
+      state.cart = {
+        name: '',
+        phone: '',
+        info: '',
+        cartPos: []
+      }
     },
     addGoodVer (state) {
       state.goodAdminModal.good.ver.push(new Good().ver[0])
@@ -170,6 +177,13 @@ export default new Vuex.Store({
           context.state.cartInfoShow = false
         }, 15000)
       })
+    },
+    delOrder (context, order) {
+      Axios.delete(context.state.server + '/api/orders/' + order._id).then(
+        resp => {
+          context.dispatch('getAllOrders')
+        }
+      )
     },
     delGood (context, good) {
       Axios.delete(context.state.server + '/api/goods/' + good._id).then(

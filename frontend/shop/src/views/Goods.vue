@@ -44,7 +44,7 @@
               <h2 class="card-title">
                 {{ good.ver[verSelected(good)].price }}₽
               </h2>
-              <div class="btn-group" role="group" style="padding-bottom: 16px;">
+              <div v-if="good.ver.length > 1" class="btn-group" role="group" style="padding-bottom: 16px;">
                 <button
                   v-for="(v, id) in good.ver"
                   :key="id"
@@ -77,17 +77,17 @@
             </div>
           </div>
         </div>
-        <admin-btns good="{}" type="add" v-if="adminMode" />
-        <edit-win />
-        <div
-          v-show="infoShow"
-          class="alert alert-success"
-          role="alert"
-          style="position: fixed; z-index: 5; bottom: 5px; right: 5px;"
-          v-html="infoText"
-        />
       </div>
     </div>
+    <admin-btns good="{}" type="add" v-if="adminMode" />
+    <edit-win />
+    <div
+      v-show="infoShow"
+      class="alert alert-success"
+      role="alert"
+      style="position: fixed; z-index: 5; bottom: 5px; right: 5px;"
+      v-html="infoText"
+    />
   </div>
 </template>
 <script>
@@ -163,18 +163,18 @@ export default {
   text-shadow: 2px 1px 3px #090;
 }
 .info-text {
-    color: red;
-    text-shadow: 1px 1px 2px rgba(255,0,0,.6);
-    font-size: 18pt;
-    line-height: 1.3;
-    background-color: hsla(0,0%,100%,.7);
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
-    margin: 75px 0 0 auto;
-    border-radius: 1em;
-    padding: 13px;
-    box-shadow: 3px 3px 13px rgba(0,100,0,0.6);
-    border: 1px solid #009900;
+  color: red;
+  text-shadow: 1px 1px 2px rgba(255, 0, 0, 0.6);
+  font-size: 18pt;
+  line-height: 1.3;
+  background-color: hsla(0, 0%, 100%, 0.7);
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 75px 0 0 auto;
+  border-radius: 1em;
+  padding: 13px;
+  box-shadow: 3px 3px 13px rgba(0, 100, 0, 0.6);
+  border: 1px solid #009900;
 }
 </style>

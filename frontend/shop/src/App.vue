@@ -1,13 +1,19 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Каталог</router-link>&nbsp;&nbsp;
+      <router-link to="/" style="margin-right: 5px">Каталог</router-link>
+      <router-link to="/orders" v-if="adminMode" style="margin-right: 5px"
+        >Заказы
+        <span v-show="ordersCount > 0" style="color:red">
+          {{ ordersCount }}
+        </span>
+      </router-link>
       <router-link to="/cart"
         >Корзина
-        <span v-show="cartCount > 0" style="color:red">{{
-          cartCount
-        }}</span></router-link
-      >
+        <span v-show="cartCount > 0" style="color:red">
+          {{ cartCount }}
+        </span>
+      </router-link>
     </div>
     <router-view />
   </div>
@@ -26,6 +32,12 @@ export default {
         count += +el.count
       })
       return count
+    },
+    ordersCount () {
+      return this.$store.state.orders.length
+    },
+    adminMode () {
+      return this.$store.state.adminMode
     }
   },
   mounted () {
@@ -118,6 +130,10 @@ body {
     max-width: 500px;
   }
 
+  #nav a, .mybtn {
+    padding: 8px 16px !important;
+  }
+
   #app {
     max-width: 500px;
     width: 100vw;
@@ -130,7 +146,7 @@ body {
     height: fit-content !important;
   }
   .info-text {
-    margin: 10px 0 0 0!important;
+    margin: 10px 0 0 0 !important;
   }
 }
 </style>
