@@ -37,7 +37,11 @@ export default {
     }
   },
   mounted () {
-    this.$store.dispatch('getAllOrders')
+    if (this.$store.state.adminMode) {
+      this.$store.dispatch('getAllOrders')
+    } else {
+      this.$router.push('/')
+    }
   }
 }
 </script>
