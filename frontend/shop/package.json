@@ -9,11 +9,15 @@
     },
     "dependencies": {
         "bootstrap-vue": "^2.20.1",
+        "bourbon": "^7.0.0",
         "core-js": "^3.6.5",
+        "node-sass": "^5.0.0",
+        "sass-loader": "^10.1.0",
         "vodal": "^2.4.0",
         "vue": "^2.6.11",
         "vue-cookies": "^1.7.4",
         "vue-router": "^3.2.0",
+        "vue-yandex-maps": "^0.10.9",
         "vuex": "^3.4.0"
     },
     "devDependencies": {

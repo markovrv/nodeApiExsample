@@ -19,28 +19,40 @@
             </tr>
           </tbody>
         </table>
-        <cart-body :cart="order" />
+        <cart-body :cart="order" type="order" />
       </div>
     </div>
-    <h3 v-else style="padding-top: 20%;">Заказов пока нет</h3>
+    <div
+      v-if="!loggedIn"
+      class="alert alert-success"
+      role="alert"
+      style="margin: 14px"
+    >
+      Нажмите кнопку
+      <b><router-link to="/login">Войти</router-link></b
+      >, чтобы увидеть Ваши заказы.
+    </div>
+    <div v-if="loggedIn && orders.length == 0">
+      <h3 style="padding-top: 20%;">Заказов пока нет</h3>
+    </div>
   </div>
 </template>
 <script>
-import Vue from 'vue'
-import cartBody from '../components/cartBody'
-Vue.component('cart-body', cartBody)
+import cartBody from '../components/cart/cartBody'
 
 export default {
+  components: { cartBody },
   computed: {
     orders () {
       return this.$store.state.orders
+    },
+    loggedIn () {
+      return this.$store.state.user.apiKey !== null
     }
   },
   mounted () {
-    if (this.$store.state.adminMode) {
+    if (this.$store.state.user.apiKey) {
       this.$store.dispatch('getAllOrders')
-    } else {
-      this.$router.push('/')
     }
   }
 }

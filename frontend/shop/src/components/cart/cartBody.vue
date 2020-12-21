@@ -9,7 +9,7 @@
           <th scope="col" style="width: 10%">Цена</th>
           <th scope="col" style="width: 10%">Количество</th>
           <th scope="col" style="width: 10%">Сумма</th>
-          <th scope="col" style="width: 114px"></th>
+          <th scope="col" style="width: 114px" v-if="type == 'cart'"></th>
         </tr>
       </thead>
       <tbody>
@@ -21,14 +21,18 @@
           <td>
             <input
               v-model="el.count"
+              v-if="type == 'cart'"
               @change="$emit('edited')"
               type="number"
               min="1"
               class="form-control form-control-sm text-center"
             />
+            <div v-else>
+              {{ el.count }}
+            </div>
           </td>
           <td>{{ getSum(el) }}</td>
-          <td>
+          <td v-if="type == 'cart'">
             <button
               class="btn btn-sm btn-danger"
               @click="
@@ -36,19 +40,7 @@
                 $emit('edited')
               "
             >
-              <svg
-                width="1em"
-                height="1em"
-                viewBox="0 0 16 16"
-                class="bi bi-trash-fill"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"
-                />
-              </svg>
+              <i class="fa fa-trash" aria-hidden="true"></i>
               удалить
             </button>
           </td>
@@ -56,10 +48,41 @@
       </tbody>
       <thead>
         <tr>
-          <th scope="col" colspan="4" class="text-right"><b>СУММА</b></th>
+          <th scope="col" colspan="2" class="text-left">
+            <button
+              v-if="$store.state.user.admin && type == 'order'"
+              class="btn btn-sm btn-danger"
+              @click="$store.dispatch('delOrder', cart)"
+            >
+              <i class="fa fa-trash" aria-hidden="true"></i>
+              удалить заказ
+            </button>
+            <button
+              v-if="$store.state.user.admin && type == 'order' && cart.status == null"
+              class="btn btn-sm btn-primary" style="margin-left: 5px"
+              @click="$store.dispatch('doneOrder', cart)"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-check"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"
+                />
+              </svg>
+              выполнить
+            </button>
+            {{ (cart.status === 'done')?'Выполнен':'' }}
+          </th>
+          <th scope="col" colspan="2" class="text-right"><b>СУММА</b></th>
           <th scope="col">{{ allCount }}</th>
           <th scope="col">{{ allPrice }}</th>
-          <th scope="col">
+          <th scope="col" v-if="type == 'cart'">
             <a
               class="btn btn-sm btn-danger"
               @click="
@@ -76,7 +99,7 @@
 </template>
 <script>
 export default {
-  props: ['cart'],
+  props: ['cart', 'type'],
   computed: {
     allPrice () {
       var count = 0

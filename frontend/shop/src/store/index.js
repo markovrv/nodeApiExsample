@@ -59,7 +59,12 @@ export default new Vuex.Store({
       type: '',
       good: new Good()
     },
-    adminMode: false
+    user: {
+      apiKey: null,
+      name: '',
+      phone: '',
+      admin: false
+    }
   },
   getters: {
     getAllGoods (state) {
@@ -77,10 +82,15 @@ export default new Vuex.Store({
     saveCart (state) {
       localStorage.cart = JSON.stringify(state.cart)
     },
+    loadCart (state) {
+      if (localStorage.cart) {
+        Vue.set(state, 'cart', JSON.parse(localStorage.cart))
+      }
+    },
     clearCart (state) {
       state.cart = {
-        name: '',
-        phone: '',
+        name: state.user.name,
+        phone: state.user.phone,
         info: '',
         cartPos: []
       }
@@ -144,9 +154,6 @@ export default new Vuex.Store({
     getAllGoods (context) {
       Axios.get(context.state.server + '/api/goods/').then(resp => {
         context.commit('setAllGoods', resp.data)
-        if (localStorage.cart) {
-          Vue.set(context.state, 'cart', JSON.parse(localStorage.cart))
-        }
       })
     },
     getAllOrders (context) {
@@ -180,6 +187,13 @@ export default new Vuex.Store({
     },
     delOrder (context, order) {
       Axios.delete(context.state.server + '/api/orders/' + order._id).then(
+        resp => {
+          context.dispatch('getAllOrders')
+        }
+      )
+    },
+    doneOrder (context, order) {
+      Axios.put(context.state.server + '/api/orders/' + order._id, { status: 'done' }).then(
         resp => {
           context.dispatch('getAllOrders')
         }
@@ -258,11 +272,32 @@ export default new Vuex.Store({
           })
       }
     },
-    login (context, data) {
-      if (data.login === 'admin') {
-        context.state.adminMode = true
+    login (context) {
+      var login = Vue.$cookies.get('login')
+      // var password = Vue.$cookies.get('password')
+      // эмулируем ответ сервера
+      if (login === 'admin') {
+        context.state.user.admin = true
+        context.state.user.apiKey = '12345'
+        context.state.user.name = 'admin'
+        context.state.user.phone = '22-55-66'
+        // обновляем данные корзины
+        context.commit('loadCart')
+        context.state.cart.name = context.state.user.name
+        context.state.cart.phone = context.state.user.phone
+        context.commit('saveCart')
         context.dispatch('getAllOrders')
       }
+      // конец ответа
+    },
+    logout (context) {
+      Vue.$cookies.remove('login')
+      Vue.$cookies.remove('password')
+      context.state.user.admin = false
+      context.state.user.apiKey = null
+      context.state.user.name = ''
+      context.state.user.phone = ''
+      context.state.orders = []
     }
   },
   modules: {}
