@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header-component />
-    <!-- <user-panel /> -->
+    <user-panel v-if="$route.path !== '/login'" />
     <router-view />
     <footer-component />
   </div>
@@ -11,11 +11,11 @@ import Vue from 'vue'
 import VueCookies from 'vue-cookies'
 import headerComponent from './components/header'
 import footerComponent from './components/footer'
-// import UserPanel from './components/userPanel'
+import UserPanel from './components/userPanel'
 Vue.use(VueCookies)
 
 export default {
-  components: { headerComponent, footerComponent },
+  components: { headerComponent, UserPanel, footerComponent },
   mounted () {
     this.$store.dispatch('getAllGoods')
     this.$store.dispatch('login')
@@ -24,7 +24,7 @@ export default {
 </script>
 <style>
 #app {
-  width: 100vw;
+  width: 100%;
   max-width: 1024px;
   box-sizing: auto;
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -54,7 +54,6 @@ export default {
 @media screen and (max-width: 700px) {
   #app {
     max-width: 830px;
-    width: 100vw;
     border-radius: 0;
     min-height: calc(100vh - 125px);
   }
@@ -63,7 +62,6 @@ export default {
 @media screen and (max-width: 500px) {
   #app {
     max-width: 500px;
-    width: 100vw;
     border-radius: 0;
     min-height: calc(100vh - 167px);
 

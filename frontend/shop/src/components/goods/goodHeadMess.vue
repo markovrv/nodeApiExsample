@@ -15,7 +15,7 @@
 <style>
 .css-3d-text {
   font-size: 28pt;
-  margin: 20px auto 0px;
+  margin: 10px auto 0px;
   padding: 6px 20px 20px 20px;
   border-radius: 1rem;
   height: 323px;

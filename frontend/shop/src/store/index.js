@@ -33,6 +33,14 @@ class Cart {
     else cart.push(this)
   }
 }
+function convertPhone (phone) {
+  var tt = phone.split('')
+  tt.splice(2, '', '(')
+  tt.splice(6, '', ') ')
+  tt.splice(10, '', '-')
+  tt.splice(0, 2)
+  return tt.join('')
+}
 
 export default new Vuex.Store({
   state: {
@@ -178,10 +186,13 @@ export default new Vuex.Store({
     },
     orderSend (context) {
       var data = JSON.parse(JSON.stringify(context.state.cart))
+      console.log(data)
+      data.phone = '+7' + data.phone.replace(/[- )(]/g, '')
       Axios.post(context.state.server + '/api/orders/', data).then(resp => {
         context.state.cartInfoShow = true
         setInterval(() => {
           context.state.cartInfoShow = false
+          context.commit('clearCart')
         }, 15000)
       })
     },
@@ -193,11 +204,11 @@ export default new Vuex.Store({
       )
     },
     doneOrder (context, order) {
-      Axios.put(context.state.server + '/api/orders/' + order._id, { status: 'done' }).then(
-        resp => {
-          context.dispatch('getAllOrders')
-        }
-      )
+      Axios.put(context.state.server + '/api/orders/' + order._id, {
+        status: 'done'
+      }).then(resp => {
+        context.dispatch('getAllOrders')
+      })
     },
     delGood (context, good) {
       Axios.delete(context.state.server + '/api/goods/' + good._id).then(
@@ -276,11 +287,11 @@ export default new Vuex.Store({
       var login = Vue.$cookies.get('login')
       // var password = Vue.$cookies.get('password')
       // эмулируем ответ сервера
-      if (login === 'admin') {
+      if (login === '+79058707667') {
         context.state.user.admin = true
         context.state.user.apiKey = '12345'
         context.state.user.name = 'admin'
-        context.state.user.phone = '22-55-66'
+        context.state.user.phone = convertPhone(login)
         // обновляем данные корзины
         context.commit('loadCart')
         context.state.cart.name = context.state.user.name
