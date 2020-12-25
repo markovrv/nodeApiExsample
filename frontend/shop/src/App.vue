@@ -18,7 +18,12 @@ export default {
   components: { headerComponent, UserPanel, footerComponent },
   mounted () {
     this.$store.dispatch('getAllGoods')
-    this.$store.dispatch('login', this)
+    var data = {
+      component: this,
+      login: Vue.$cookies.get('login'),
+      password: Vue.$cookies.get('password')
+    }
+    this.$store.dispatch('login', data)
     this.$store.commit('loadCart')
   }
 }

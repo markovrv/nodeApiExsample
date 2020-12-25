@@ -64,9 +64,12 @@ export default {
       this.login = '+7' + this.login.replace(/[- )(]/g, '')
       Vue.$cookies.set('login', this.login)
       Vue.$cookies.set('password', this.password)
-      this.login = ''
-      this.password = ''
-      this.$store.dispatch('login', this)
+      var data = {
+        component: this,
+        login: this.login,
+        password: this.password
+      }
+      this.$store.dispatch('login', data)
     }
   }
 }

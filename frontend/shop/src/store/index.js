@@ -422,12 +422,12 @@ export default new Vuex.Store({
         })
     },
     // авторизация пользователя
-    login (context, component) {
-      var login = Vue.$cookies.get('login')
-      var password = Vue.$cookies.get('password')
+    login (context, data) {
+      var login = data.login
+      var password = data.password
       if (!login || !password) {
-        if (component.loginForm) {
-          component.$Notify.error({
+        if (data.component.loginForm) {
+          data.component.$Notify.error({
             message: context.state.messages.inputLoginPassword
           })
         }
@@ -449,19 +449,19 @@ export default new Vuex.Store({
           context.commit('saveCart')
           context.dispatch('getAllOrders')
           // если вход через форму логина (не автовход)
-          if (component.loginForm) {
+          if (data.component.loginForm) {
             // выводим оповещение об успешном входе
-            component.$Notify.success({
+            data.component.$Notify.success({
               title: 'Здравствуйте, ' + context.state.user.name
             })
             // на предыдущую страницу
-            component.$router.go(-1)
+            data.component.$router.go(-1)
           }
         })
         .catch(error => {
           if (error.response) {
             // выводим ошибку о неверных логине - пароле
-            component.$Notify.error({
+            data.component.$Notify.error({
               message: context.state.errorCodes[error.response.status]
             })
             context.dispatch('logout')
@@ -477,6 +477,8 @@ export default new Vuex.Store({
       context.state.user.name = ''
       context.state.user.phone = ''
       context.state.orders = []
+      context.commit('clearCart')
+      context.commit('saveCart')
     }
   },
   modules: {}
