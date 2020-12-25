@@ -27,15 +27,6 @@ exports.findByApikey = (apikey, cb) =>
     },
     (err, doc) => cb(err, doc))
 
-// Выводит пользователя по логину и паролю
-exports.findByLoginPassword = (data, cb) =>
-  db.collection(tableName).findOne(
-    {
-      login: data.login,
-      password: data.password
-    },
-    (err, doc) => cb(err, doc))
-
 // Выводит пользователя по логину
 exports.findByLogin = (login, cb) =>
   db.collection(tableName).findOne(

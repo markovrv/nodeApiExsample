@@ -23,7 +23,7 @@
       </div>
     </div>
     <div
-      v-if="!loggedIn"
+      v-if="$store.state.user.apikey === null"
       class="alert alert-success"
       role="alert"
       style="margin: 14px"
@@ -32,7 +32,7 @@
       <b><router-link to="/login">Войти</router-link></b
       >, чтобы увидеть Ваши заказы.
     </div>
-    <div v-if="loggedIn && orders.length == 0">
+    <div v-if="$store.state.user.apikey !== null && orders.length == 0">
       <h3 style="padding-top: 20%;">Заказов пока нет</h3>
     </div>
   </div>
@@ -45,13 +45,10 @@ export default {
   computed: {
     orders () {
       return this.$store.state.orders
-    },
-    loggedIn () {
-      return this.$store.state.user.apiKey !== null
     }
   },
   mounted () {
-    if (this.$store.state.user.apiKey) {
+    if (this.$store.state.user.apikey) {
       this.$store.dispatch('getAllOrders')
     }
   }

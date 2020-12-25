@@ -21,6 +21,7 @@
       v-if="type == 'add'"
       class="btn btn-success btn-bottom"
       type="button"
+      style="z-index: 100;"
       @click="$store.commit('showGoodAdminModal', { good, type: 'add' })"
     >
       <i class="fa fa-plus" aria-hidden="true"></i>

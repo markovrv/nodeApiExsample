@@ -5,6 +5,10 @@ var usersController = require('./controllers/users')
 var express = require('express')
 var app = express()
 var db = require('./db')
+const cors = require('cors');
+
+app.use(cors());
+app.options('*', cors());
 
 // Статический роут для фронтенда в папке public
 app.use(express.static('public'))
@@ -26,13 +30,3 @@ db.connect('mongodb://localhost:27017', 'myapi', err => {
   if (err) return console.log(err)
   app.listen(3012, () => console.log('server started on http://127.0.0.1:3012'))
 })
-
-// var request = require('request')
-// var fs = require('fs')
-// var options = {
-//   url: 'http://rza.kirov.ru/api'
-// }
-
-// request.get(options, function (error, response, body) {
-//   console.log(body)
-// })

@@ -12,8 +12,8 @@ router.use(bodyParser.urlencoded({
 router.get('/', usersController.all)
 router.get('/:id', usersController.findByID)
 router.put('/:id', usersController.update)
-router.post('/register', usersController.create)
 router.delete('/:id', usersController.delete)
 router.post('/login', usersController.login)
+router.post('/register', usersController.create)
 
 module.exports = router;

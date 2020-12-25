@@ -18,7 +18,8 @@ export default {
   components: { headerComponent, UserPanel, footerComponent },
   mounted () {
     this.$store.dispatch('getAllGoods')
-    this.$store.dispatch('login')
+    this.$store.dispatch('login', this)
+    this.$store.commit('loadCart')
   }
 }
 </script>
@@ -36,7 +37,7 @@ export default {
   margin: 0 auto;
   min-height: calc(100vh - 116px);
   box-shadow: 0px 0px 50px #ffff00;
-  position:relative;
+  position: relative;
 }
 
 .title {
@@ -64,7 +65,6 @@ export default {
     max-width: 500px;
     border-radius: 0;
     min-height: calc(100vh - 167px);
-
   }
 }
 </style>

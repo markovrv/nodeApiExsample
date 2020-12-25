@@ -4,7 +4,11 @@
     <div v-for="group in groupps" :key="group.val">
       <div v-if="groupHeadShow(group)" class="title">{{ group.name }}</div>
       <div class="row">
-        <div v-for="(good, gid) in filteredGoods(group)" :key="gid" class="col-md-6 col-lg-4">
+        <div
+          v-for="(good, gid) in filteredGoods(group)"
+          :key="gid"
+          class="col-md-6 col-lg-4"
+        >
           <div class="card">
             <admin-btns v-if="adminMode" type="edit" :good="good" />
             <good-img :good="good" :ver="verSelected(good)" />
@@ -14,8 +18,14 @@
               <h2 class="card-title">{{ price(good) }}</h2>
               <good-versions :good="good" :selected="verSelected(good)" />
               <div>
-                <a class="mybtn" style="cursor: pointer;" @click="addToCard(good)">
-                  <i class="fa fa-cart-plus" aria-hidden="true"></i> в корзину</a>
+                <a
+                  class="mybtn"
+                  style="cursor: pointer;"
+                  @click="addToCard(good)"
+                >
+                  <i class="fa fa-cart-plus" aria-hidden="true"></i> в
+                  корзину</a
+                >
               </div>
             </div>
           </div>
@@ -24,25 +34,17 @@
     </div>
     <admin-btns good="{}" type="add" v-if="adminMode" />
     <edit-win />
-    <info-mess :show="infoShow" :text="infoText" />
   </div>
 </template>
 <script>
 import adminBtns from '../components/goods/goodAdminBtns'
 import editWin from '../components/goods/goodEditPopup'
 import goodHeadMess from '../components/goods/goodHeadMess'
-import infoMess from '../components/infoMess'
 import goodImg from '../components/goods/goodImg'
 import goodVersions from '../components/goods/goodVersions'
 
 export default {
-  components: { infoMess, goodVersions, goodImg, goodHeadMess, editWin, adminBtns },
-  data () {
-    return {
-      infoShow: false,
-      infoText: ''
-    }
-  },
+  components: { goodVersions, goodImg, goodHeadMess, editWin, adminBtns },
   methods: {
     price (good) {
       return good.ver[this.verSelected(good)].price + '₽'
@@ -60,14 +62,9 @@ export default {
       return this.goods.filter(good => good.group === group.val)
     },
     showInfo (text) {
-      this.infoText =
-        'Товар "' +
-        text +
-        '" добавлен в <a href="#/cart" class="alert-link">корзину</a>'
-      this.infoShow = true
-      setTimeout(() => {
-        this.infoShow = false
-      }, 15000)
+      this.$Notify.success({
+        title: 'Товар "' + text + '" добавлен в корзину'
+      })
     },
     verSelected (good) {
       if (good.selected === undefined) return 0
@@ -88,7 +85,7 @@ export default {
       return this.$store.state.groupps
     },
     goods () {
-      return this.$store.getters.getAllGoods
+      return this.$store.state.goods
     },
     adminMode () {
       return this.$store.state.user.admin

@@ -1,13 +1,17 @@
 import Vue from 'vue'
+import AtComponents from 'at-ui'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import './assets/styles.scss'
-import { BootstrapVue } from 'bootstrap-vue'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+// import { BootstrapVue } from 'bootstrap-vue'
 
-Vue.use(BootstrapVue)
+import 'at-ui-style'
+import './assets/styles.scss'
+import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+// Vue.use(BootstrapVue)
+Vue.use(AtComponents)
 
 Vue.directive('phone', {
   bind (el) {
@@ -24,9 +28,6 @@ Vue.directive('phone', {
   }
 })
 
-window.axios = require('axios')
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-window.axios.defaults.headers.common.Accept = 'application/json'
 Vue.config.productionTip = false
 
 new Vue({

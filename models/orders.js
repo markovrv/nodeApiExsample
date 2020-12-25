@@ -11,11 +11,11 @@ exports.all = cb =>
 exports.findByUserId = (userId, cb) =>
   db
     .collection(tableName)
-    .find({ userId })
+    .find({ user: userId.toString() })
     .toArray((err, docs) => cb(err, docs))
 
 exports.findByID = (id, cb) =>
-  db.collection(tableName).findOne(
+  db.collection(tableName).find(
     {
       _id: ObjectID(id)
     },

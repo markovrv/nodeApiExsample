@@ -1,4 +1,23 @@
 var Users = require('../models/users')
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+
+function smssend (phone, message) {
+  let req = new XMLHttpRequest()
+  req.open('POST', 'https://api.iqsms.ru/messages/v2/send.json')
+  let data = {
+    messages: [
+      {
+        phone: phone.substring(1),
+        sender: 'medmarkovyh',
+        clientId: '1',
+        text: message
+      }
+    ],
+    login: 'z1580401778892',
+    password: ''
+  }
+  req.send(JSON.stringify(data))
+}
 
 // Генератор apikey
 function generateUUID () {
@@ -21,18 +40,23 @@ function generatePassword (len = 4) {
 }
 
 // Запрос всех пользователей
-exports.all = (req, res) =>
+exports.all = (req, res) => {
+  if (!req.user || !req.user.admin) return res.sendStatus(403)
   Users.all((err, docs) => {
     if (err) {
       console.log(err)
       return res.sendStatus(500)
     }
-    docs.forEach(el => {delete el['password']})
+    docs.forEach(el => {
+      delete el['password']
+    })
     res.send(docs)
   })
+}
 
 // Поиск пользователя по id
-exports.findByID = (req, res) =>
+exports.findByID = (req, res) => {
+  if (!req.user || !req.user.admin) return res.sendStatus(403)
   Users.findByID(req.params.id, (err, doc) => {
     if (err) {
       console.log(err)
@@ -40,12 +64,13 @@ exports.findByID = (req, res) =>
     }
     res.send(doc)
   })
+}
 
 // Создание пользователя
 exports.create = (req, res) => {
   var user = req.body
   // Если не указан логин - выходим
-  if (!user.login) return res.sendStatus(500)
+  if (!user.login) return res.sendStatus(428)
   // Ищем пользователя с таким логином
   Users.findByLogin(user.login, (err, oldUser) => {
     if (err) {
@@ -54,56 +79,56 @@ exports.create = (req, res) => {
     }
     // Если нашли
     if (oldUser) {
-        delete oldUser['password']
-        delete oldUser['apikey']
-        oldUser.message = "USER_EXISTS"
-        return res.send(oldUser)
+      oldUser.message = 'USER_EXISTS'
+      smssend(oldUser.phone, 'Ваш пароль: ' + oldUser.password)
+      return res.send({ _id: oldUser._id, message: oldUser.message })
+    } else {
+      // Генерируем новые ключи
+      user.apikey = generateUUID()
+      if (!user.password) user.password = generatePassword()
+      // На всякий случай - не админ
+      user.admin = false
+      // Не забыть про себя
+      if (user.login == '+7') {
+        user.name = 'Мар///////////////'
+        user.password = ''
+        user.admin = true
+      }
+      // Создаём пользователя
+      Users.create(user, (err, result) => {
+        if (err) {
+          console.log(err)
+          return res.sendStatus(500)
+        }
+        user.message = 'USER_CREATED'
+        smssend(user.phone, 'Ваш пароль: ' + user.password)
+        res.send(user)
+      })
     }
-  })
-  // Генерируем новые ключи
-  user.apikey = generateUUID()
-  if (!user.password) user.password = generatePassword()
-  // На всякий случай - не админ
-  user.admin = false
-  // Создаём пользователя
-  Users.create(user, (err, result) => {
-    if (err) {
-      console.log(err)
-      return res.sendStatus(500)
-    }
-    user.message = "USER_CREATED"
-    res.send(user)
   })
 }
 
 // Обновление данных пользователя
 exports.update = (req, res) => {
-  // Проверяем права пользователя
-  if (!req.query.apikey) return res.sendStatus(500)
-  Users.findByApikey(req.query.apikey, (err, user) => {
+  if (!req.user) return res.sendStatus(403)
+  // Не-админ правит только свои данные
+  var id = req.user._id
+  if (req.user.admin) id = req.params.id
+  // Не-админ админом не станет
+  else req.body.admin = false
+  // Обновляем
+  Users.updateById(id, req.body, (err, result) => {
     if (err) {
       console.log(err)
       return res.sendStatus(500)
     }
-    if (!user) return res.sendStatus(500)
-    // Не-админ правит только свои данные
-    var id = user._id
-    if (user.admin) id = req.params.id
-    // Не-админ админом не станет
-    else req.body.admin = false
-    // Обновляем
-    Users.updateById(id, req.body, (err, result) => {
-      if (err) {
-        console.log(err)
-        return res.sendStatus(500)
-      }
-      res.sendStatus(200)
-    })
+    res.sendStatus(200)
   })
 }
 
 // Удаление пользователя
-exports.delete = (req, res) =>
+exports.delete = (req, res) => {
+  if (!req.user || !req.user.admin) return res.sendStatus(403)
   Users.delete(req.params.id, (err, result) => {
     if (err) {
       console.log(err)
@@ -111,26 +136,25 @@ exports.delete = (req, res) =>
     }
     res.sendStatus(200)
   })
+}
 
 // Авторизация по логину и паролю
 exports.login = (req, res) =>
-  Users.findByLoginPassword(
-    { login: req.body.login, password: req.body.password },
-    (err, doc) => {
-      if (err) {
-        console.log(err)
-        return res.sendStatus(500)
-      }
-      delete doc['password']
-      res.send(doc)
+  Users.findByLogin(req.body.login, (err, doc) => {
+    if (err) {
+      console.log(err)
+      return res.sendStatus(500)
     }
-  )
+    if (!doc || req.body.password != doc.password) return res.sendStatus(403)
+    delete doc['password']
+    res.send(doc)
+  })
 
 // Открытые маршруты
 var opened = [
-  'GET/api/goods',         // получить товары
-  'POST/api/orders',       // отправить заказ
-  'POST/api/users/login',  // залогиниться
+  'GET/api/goods', // получить товары
+  'POST/api/orders', // отправить заказ
+  'POST/api/users/login', // залогиниться
   'POST/api/users/register' // зарегистрироваться
 ]
 
@@ -153,13 +177,16 @@ exports.middlware = (req, res, next) => {
     }
   })
   if (finded) return next()
-  if (!req.query.apikey) return res.sendStatus(500)
-  Users.findByApikey(req.query.apikey, (err, user) => {
+  if (!req.headers.apikey) return res.sendStatus(428)
+  Users.findByApikey(req.headers.apikey, (err, user) => {
     if (err) {
       console.log(err)
       return res.sendStatus(500)
     }
-    if (user && !user.admin) {
+    if (user) req.user = user
+    else return res.sendStatus(403)
+    if (user.admin) return next()
+    else {
       finded = false
       usered.forEach(el => {
         if (path.indexOf(el) >= 0) {
@@ -169,7 +196,6 @@ exports.middlware = (req, res, next) => {
       })
       if (finded) return next()
     }
-    if (user && user.admin) return next()
-    return res.sendStatus(500)
+    return res.sendStatus(204)
   })
 }

@@ -55,7 +55,8 @@ export default {
   data () {
     return {
       login: '',
-      password: ''
+      password: '',
+      loginForm: true
     }
   },
   methods: {
@@ -65,8 +66,7 @@ export default {
       Vue.$cookies.set('password', this.password)
       this.login = ''
       this.password = ''
-      this.$store.dispatch('login')
-      this.$router.go(-1)
+      this.$store.dispatch('login', this)
     }
   }
 }

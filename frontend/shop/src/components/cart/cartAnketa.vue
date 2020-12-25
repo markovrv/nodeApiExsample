@@ -57,7 +57,7 @@ export default {
       return this.$store.state.cart
     },
     loggedIn () {
-      return this.$store.state.user.apiKey !== null
+      return this.$store.state.user.apikey !== null
     }
   }
 }

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class=" container-md text-right" v-if="loggedIn">
+    <div class="container-md text-right" v-if="user.apikey !== null ">
       <small style="color: #888"
         >Здравствуйте,
         <a href="javascript://" style="cursor: pointer">
           <i class="fa fa-user" aria-hidden="true"></i>
-          {{ user.name }}</a><span> | </span>
+          {{ (user.name)?user.name:user.phone }}</a><span> | </span>
         <a href="javascript://" style="cursor: pointer" v-if="user.admin"
           ><i class="fa fa-users" aria-hidden="true"></i>
           пользователи</a
@@ -47,9 +47,6 @@ export default {
         }
       })
       return count
-    },
-    loggedIn () {
-      return this.$store.state.user.apiKey !== null
     },
     user () {
       return this.$store.state.user

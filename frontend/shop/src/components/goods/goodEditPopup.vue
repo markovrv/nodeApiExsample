@@ -1,7 +1,7 @@
 <template>
   <vodal
     :show="$store.state.goodAdminModal.show"
-    @hide="$store.commit('closeGoodAdminModal')"
+    @hide="closeModal"
     :customStyles="{ width: '50%', minWidth: '300px', height: 'fit-content' }"
   >
     <h3>{{ $store.state.goodAdminModal.header }}</h3>
@@ -69,14 +69,14 @@
         </button>
         <button
           class="btn btn-primary"
-          @click="$store.dispatch('setGood', good)"
+          @click="setGood(good)"
         >
           <i class="fa fa-floppy-o" aria-hidden="true"></i>
           Сохранить
         </button>
         <button
           class="btn btn-danger"
-          @click="$store.dispatch('delGood', good)"
+          @click="delGood(good)"
           :disabled="good._id == undefined"
         >
           <i class="fa fa-trash" aria-hidden="true"></i>
@@ -144,6 +144,15 @@ export default {
   methods: {
     handleFileUpload () {
       this.file = this.$refs.file.files[0]
+    },
+    delGood (good) {
+      this.$store.dispatch('delGood', { good, component: this })
+    },
+    setGood (good) {
+      this.$store.dispatch('setGood', { good, component: this })
+    },
+    closeModal () {
+      this.$store.commit('closeGoodAdminModal', null)
     }
   }
 }

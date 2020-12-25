@@ -1,19 +1,5 @@
 <template>
   <div id="nav">
-    <!-- <router-link to="/" style="margin-right: 5px">Каталог</router-link>
-    <router-link to="/cart" style="margin-right: 5px"
-      >Корзина
-      <span v-show="cartCount > 0" style="color:red">
-        {{ cartCount }}
-      </span>
-    </router-link>
-    <router-link to="/orders" style="margin-right: 5px" v-if="loggedIn"
-      >Заказы
-      <span v-show="ordersCount > 0" style="color:red">
-        {{ ordersCount }}
-      </span>
-    </router-link>
-    <router-link v-else to="/login">Войти</router-link> -->
     <nav class="navbar navbar-expand-sm">
       <!-- <router-link to="/" class="navbar-brand">Главная</router-link> -->
       <a href="#" class="navbar-toggler mybtn" @click="menuShow = !menuShow">
@@ -77,7 +63,7 @@ export default {
       return count
     },
     loggedIn () {
-      return this.$store.state.user.apiKey !== null
+      return this.$store.state.user.apikey !== null
     },
     user () {
       return this.$store.state.user
