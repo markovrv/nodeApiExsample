@@ -33,7 +33,6 @@ export default {
   props: ['good', 'type']
 }
 </script>
-
 <style>
 .btn-top {
   position: absolute;
@@ -46,7 +45,7 @@ export default {
   bottom: 15px;
   right: 15px;
   border-radius: 20px !important;
-    width: 40px;
+  width: 40px;
   height: 40px;
 }
 </style>

@@ -33,18 +33,20 @@
       </div>
     </div>
     <admin-btns good="{}" type="add" v-if="adminMode" />
+    <cart-btn />
     <edit-win />
   </div>
 </template>
 <script>
 import adminBtns from '../components/goods/goodAdminBtns'
+import cartBtn from '../components/goods/cartBtn'
 import editWin from '../components/goods/goodEditPopup'
 import goodHeadMess from '../components/goods/goodHeadMess'
 import goodImg from '../components/goods/goodImg'
 import goodVersions from '../components/goods/goodVersions'
 
 export default {
-  components: { goodVersions, goodImg, goodHeadMess, editWin, adminBtns },
+  components: { goodVersions, goodImg, goodHeadMess, editWin, adminBtns, cartBtn },
   methods: {
     price (good) {
       return good.ver[this.verSelected(good)].price + '₽'
