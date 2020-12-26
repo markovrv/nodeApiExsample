@@ -13,7 +13,7 @@
 export default {
   computed: {
     cartCount () {
-      return this.$store.state.cart.cartPos.length
+      return this.$store.getters.ordersCount
     }
   },
   methods: {

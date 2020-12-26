@@ -1,5 +1,6 @@
 <template>
   <div class="goods container-md">
+    <!-- рекламмный баннер -->
     <good-head-mess />
     <div v-for="group in groupps" :key="group.val">
       <div v-if="groupHeadShow(group)" class="title">{{ group.name }}</div>
@@ -32,6 +33,7 @@
         </div>
       </div>
     </div>
+    <!-- скрытые элементы страницы -->
     <admin-btns good="{}" type="add" v-if="adminMode" />
     <cart-btn />
     <edit-win />
@@ -46,7 +48,14 @@ import goodImg from '../components/goods/goodImg'
 import goodVersions from '../components/goods/goodVersions'
 
 export default {
-  components: { goodVersions, goodImg, goodHeadMess, editWin, adminBtns, cartBtn },
+  components: {
+    goodVersions,
+    goodImg,
+    goodHeadMess,
+    editWin,
+    adminBtns,
+    cartBtn
+  },
   methods: {
     price (good) {
       return good.ver[this.verSelected(good)].price + '₽'

@@ -109,11 +109,7 @@ export default {
       return count
     },
     allCount () {
-      var count = 0
-      this.cart.cartPos.forEach(el => {
-        count += +el.count
-      })
-      return count
+      return this.$store.getters.ordersCount
     }
   },
   methods: {

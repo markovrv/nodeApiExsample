@@ -54,13 +54,7 @@ export default {
       return count
     },
     ordersCount () {
-      var count = 0
-      this.$store.state.orders.forEach(el => {
-        if (el.status == null) {
-          count++
-        }
-      })
-      return count
+      return this.$store.getters.ordersCount
     },
     loggedIn () {
       return this.$store.state.user.apikey !== null

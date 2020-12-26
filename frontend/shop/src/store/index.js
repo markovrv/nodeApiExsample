@@ -83,6 +83,17 @@ export default new Vuex.Store({
       admin: false
     }
   },
+  getters: {
+    ordersCount (state) {
+      var count = 0
+      state.orders.forEach(el => {
+        if (el.status == null) {
+          count++
+        }
+      })
+      return count
+    }
+  },
   mutations: {
     //
     // =======================  методы корзины  ===========================
