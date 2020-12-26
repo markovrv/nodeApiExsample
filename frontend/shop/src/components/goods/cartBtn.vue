@@ -13,7 +13,7 @@
 export default {
   computed: {
     cartCount () {
-      return this.$store.getters.ordersCount
+      return this.$store.getters.cartCount
     }
   },
   methods: {

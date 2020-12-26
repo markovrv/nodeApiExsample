@@ -92,6 +92,13 @@ export default new Vuex.Store({
         }
       })
       return count
+    },
+    cartCount (state) {
+      var count = 0
+      state.cart.cartPos.forEach(el => {
+        count += +el.count
+      })
+      return count
     }
   },
   mutations: {

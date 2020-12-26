@@ -47,11 +47,7 @@ export default {
   },
   computed: {
     cartCount () {
-      var count = 0
-      this.$store.state.cart.cartPos.forEach(el => {
-        count += +el.count
-      })
-      return count
+      return this.$store.getters.cartCount
     },
     ordersCount () {
       return this.$store.getters.ordersCount
