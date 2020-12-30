@@ -24,7 +24,7 @@
       style="z-index: 100;"
       @click="$store.commit('showGoodAdminModal', { good, type: 'add' })"
     >
-      <i class="fa fa-plus" aria-hidden="true"></i>
+      <i class="fa fa-plus" aria-hidden="true"></i> товар
     </button>
   </div>
 </template>
@@ -45,7 +45,7 @@ export default {
   bottom: 15px;
   right: 15px;
   border-radius: 20px !important;
-  width: 40px;
+  width: 90px;
   height: 40px;
 }
 </style>

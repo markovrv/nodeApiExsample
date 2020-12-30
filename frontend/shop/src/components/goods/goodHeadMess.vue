@@ -5,14 +5,10 @@
       в наш интернет магазин<br />
     </div>
     <div class="info-text text-left">
-      <!-- У нас есть новогодние предложения:<br />
+      У нас есть новогодние предложения:<br />
       - восковые свечи,<br />
       - ароматное медовое мыло,<br />
-      - мёд в оригинальной упаковке -->
-      27 декабря в ТРЦ Джем Молл Выставка-продажа <br />
-      мёда и новогодних сувениров с пасеки Марковых. <br />
-      В продаже мёд, новогодние восковые свечи, <br />
-      ароматное медовое мыло.
+      - мёд в оригинальной упаковке
     </div>
   </div>
 </template>
@@ -22,12 +18,12 @@
   margin: 10px auto 0px;
   padding: 6px 20px 20px 20px;
   border-radius: 1rem;
-  height: 323px;
-  background-image: url(https://пасека-марковых.рф/images/photos/2/foto0090.jpg);
   background-size: 100%;
   line-height: 1;
-  color: #009900;
-  text-shadow: 2px 1px 3px #090;
+  height: fit-content !important;
+  background-image: url(../../assets/yarm.jpg) !important;
+  color: #fed501 !important;
+  text-shadow: 2px 1px 3px #420000 !important;
 }
 .info-text {
   color: red;
